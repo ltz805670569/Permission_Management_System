@@ -1,0 +1,151 @@
+.head{
+  height: 60px;
+  width: 220px;
+  line-height: 60px;
+}
+.head_image{
+    position: relative;
+    bottom: 3px;
+    right: 7px;
+    width: 60px;
+    height: 60px;
+    background:url("../images/qie.png") 20px 20px no-repeat;
+    display: inline-block;
+}
+.head_font{
+    height: 40px;
+    right: 3px;
+    position: relative;
+    bottom: 9px;
+    display: inline-block;
+    vertical-align: inherit;
+    font-size: 20px;
+    color: #4ECDC4;
+    font-family: 'Ruda', sans-serif;
+}
+.head_message{
+    font-size: 20px;
+    color: #4ECDC4;
+    font-family: 'Ruda', sans-serif;
+    position: relative;
+    left: 1360px;
+    right: 60px;
+    bottom: 85px;
+    display: inline-block;
+}
+.head_btn{
+    font-size: 25px;
+    position: absolute;
+    display: inline-block;
+    right: 35px;
+    bottom: 12px;
+}
+.menu_nav{
+    height: 300px;
+}
+.container{
+    width: 160px;
+    text-align: center;
+    font-family: 'Ruda', sans-serif
+}
+.active a{
+    background-color: #4ECDC4;
+}
+.nav{
+    list-style: none;
+    height: 200px;
+}
+.nav li{
+    padding-bottom: 7px;
+}
+.nav li a{
+    width: 160px;
+    font-size: 16px;
+    color: #aeb2bf;
+}
+.nav li a:hover{
+    /*background-color: #337ab7;*/
+    /*background-color: #4ECDC4;*/
+    color:#FFF;
+    font-weight: bold;
+}
+.down-menu{
+    width: 140px;
+}
+.down-menu li{
+    padding-bottom: 4px;
+    padding-top: 7px;
+    border-radius: 5px;
+}
+.down-menu li:hover{
+    background-color: #4ECDC4;
+}
+.down-menu li a{
+    font-size: 14px;
+    list-style: none;
+    text-decoration: none;
+}
+.down-menu_one{
+    display:none;
+}
+.down-menu_two{
+    display:none;
+}
+.down-menu_three{
+    display:none;
+}
+.userDiv{
+    width:1300px;
+    height: 100%;
+}
+.table tr th{
+    text-align: center;
+    background-color: rgba(242, 242, 242, 1);
+    color: #000000;
+}
+.table tr td{
+    text-align: center;
+}
+.update_form{
+    margin-top: 30px;
+}
+.add_form{
+    margin-top: 30px;
+}
+.update_form{
+    overflow: hidden;
+}
+.user_row{
+    position: relative;
+    bottom: 250px;
+    left: 550px;
+}
+.user_row_one{
+    position: relative;
+    left: 35px;
+}
+.user_row_two{
+    position: relative;
+    bottom: 5px;
+    left: 18px;
+}
+.main_number{
+    text-align: center;
+    margin: 0 auto;
+    width: 1200px;
+    height: 300px;
+    position: relative;
+    top: 80px;
+}
+.number{
+    position: relative;
+    left: 80px;
+    float: left;
+    width: 220px;
+    height: 150px;
+    margin-right: 40px;
+}
+
+
+
+

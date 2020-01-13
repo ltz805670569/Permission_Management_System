@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.itxdl.mapper.UserMapper">
+
+    <select id="findUser" resultType="cn.itxdl.bean.User">
+        select * from tb_user where id = #{id} and password = #{password}
+    </select>
+
+<!--    <select id="findAll" resultMap="queryForUserRole">-->
+<!--       select u.id,u.username,u.password,u.sex,u.phone,u.email,u.status,r.roleid,r.rolename,r.roleinfo-->
+<!--       from tb_user u,tb_role r,user_role_mapping ur-->
+<!--       where u.id = ur.user_id and r.roleid = ur.role_id order by u.id asc-->
+<!--    </select>-->
+
+<!--    <select id="selOne" resultMap="queryForUserRole" parameterType="Integer">-->
+<!--        select u.id,u.username,u.password,u.sex,u.phone,u.email,u.status,r.roleid,r.rolename,r.roleinfo-->
+<!--        from tb_user u,tb_role r,user_role_mapping ur-->
+<!--        where u.id = ur.user_id and r.roleid = ur.role_id and u.id=#{id}-->
+<!--    </select>-->
+    <select id="selOne" resultMap="queryForUserRole" parameterType="Integer">
+         select id,username,password,sex,phone,email,status from tb_user where id = #{id}
+    </select>
+
+<!--    <resultMap id="queryForUserRole" type="cn.itxdl.bean.UserRoleMessage">-->
+<!--        <id column="id" property="id" jdbcType="INTEGER"/>-->
+<!--        <result column="username" property="username" jdbcType="VARCHAR"/>-->
+<!--        <result column="password" property="password" jdbcType="VARCHAR"/>-->
+<!--        <result column="sex" property="sex" jdbcType="VARCHAR"/>-->
+<!--        <result column="phone" property="phone" jdbcType="VARCHAR"/>-->
+<!--        <result column="email" property="email" jdbcType="VARCHAR"/>-->
+<!--        <result column="status" property="status" jdbcType="INTEGER"/>-->
+<!--        <collection property="roles" javaType="java.util.List" ofType="cn.itxdl.bean.Role">-->
+<!--            <id column="roleid" property="roleid" jdbcType="INTEGER"/>-->
+<!--            <result column="rolename" property="rolename" jdbcType="VARCHAR"/>-->
+<!--            <result column="roleinfo" property="roleinfo" jdbcType="VARCHAR"/>-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+
+    <!--  分页sql  -->
+    <select id="findAll" resultMap="queryForUserRole">
+       select id,username,password,sex,phone,email,status from tb_user
+    </select>
+
+    <resultMap id="queryForUserRole" type="cn.itxdl.bean.UserRoleMessage">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <collection property="roles" javaType="java.util.List" ofType="cn.itxdl.bean.Role" column="id"
+                    select="cn.itxdl.mapper.RoleMapper.selRoleListByUserId">
+        </collection>
+    </resultMap>
+
+    <update id="updateUser">
+        update tb_user set username=#{username},password=#{password},sex=#{sex},phone=#{phone},email=#{email}
+        where id = #{id}
+    </update>
+
+    <select id="findRoleId" resultType="Integer">
+        select roleid from tb_role where rolename = #{rolename};
+    </select>
+
+    <insert id="addUser">
+        insert into tb_user(username, password, sex, phone, email)  values (#{username},#{password},#{sex},#{phone},#{email})
+    </insert>
+
+    <insert id="addUserRoleMapping">
+        insert into user_role_mapping(user_id, role_id) values (#{user_id},#{role_id});
+    </insert>
+
+    <select id="findNextUserId" resultType="java.lang.Integer">
+        select auto_increment
+        from information_schema.`TABLES`
+        where table_name='tb_user' and TABLE_SCHEMA='test1'
+    </select>
+
+    <delete id="deleteUser">
+        delete from tb_user where id = #{id}
+    </delete>
+
+    <delete id="deleteUserRoleMapping">
+        delete from user_role_mapping where user_id = #{user_id}
+    </delete>
+
+    <select id="selCountUser" resultType="java.lang.Integer">
+        select count(id) from tb_user
+    </select>
+</mapper>

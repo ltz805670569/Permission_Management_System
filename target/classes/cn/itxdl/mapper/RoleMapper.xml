@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.itxdl.mapper.RoleMapper">
+
+    <select id="findRoles" resultType="cn.itxdl.bean.Role">
+        select roleid, rolename, roleinfo from tb_role
+    </select>
+
+<!--    <select id="selOne" resultMap="queryForRolePrivilage" parameterType="Integer">-->
+<!--        select r.roleid,r.rolename,r.roleinfo,p.privilageid,p.`name`,p.privilage_info-->
+<!--        from tb_role r,tb_privilage p,role_privilage_mapping rp-->
+<!--        where r.roleid = rp.role_id and p.privilageid = rp.privilage_id and r.roleid = #{roleid}-->
+<!--    </select>-->
+    <select id="selOne" resultMap="queryForRolePrivilage" parameterType="Integer">
+        select roleid,rolename,roleinfo from tb_role where roleid = #{roleid}
+    </select>
+
+<!--    <select id="findAll" resultMap="queryForRolePrivilage">-->
+<!--        select r.roleid,r.rolename,r.roleinfo,p.privilageid,p.`name`,p.privilage_info-->
+<!--        from tb_role r,tb_privilage p,role_privilage_mapping rp-->
+<!--        where r.roleid = rp.role_id and p.privilageid = rp.privilage_id order by r.roleid asc-->
+<!--    </select>-->
+
+<!--    <resultMap id="queryForRolePrivilage" type="cn.itxdl.bean.RolePrivilageMessage">-->
+<!--        <id column="roleid" property="roleid" jdbcType="INTEGER"/>-->
+<!--        <result column="rolename" property="rolename" jdbcType="VARCHAR"/>-->
+<!--        <result column="roleinfo" property="roleinfo" jdbcType="VARCHAR"/>-->
+<!--        <collection property="privilages" javaType="java.util.List" ofType="cn.itxdl.bean.Privilage">-->
+<!--            <id column="privilageid" property="privilageid" jdbcType="INTEGER"/>-->
+<!--            <result column="name" property="name" jdbcType="VARCHAR"/>-->
+<!--            <result column="privilage_info" property="privilage_info" jdbcType="VARCHAR"/>-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+    <!-- 查询全部并分页   -->
+
+    <select id="findAll" resultMap="queryForRolePrivilage">
+        select roleid,rolename,roleinfo from tb_role
+    </select>
+
+    <resultMap id="queryForRolePrivilage" type="cn.itxdl.bean.RolePrivilageMessage">
+        <id column="roleid" property="roleid" jdbcType="INTEGER"/>
+        <result column="rolename" property="rolename" jdbcType="VARCHAR"/>
+        <result column="roleinfo" property="roleinfo" jdbcType="VARCHAR"/>
+        <collection property="privilages" javaType="java.util.List" ofType="cn.itxdl.bean.Privilage" column="roleid"
+                    select="cn.itxdl.mapper.PrivilageMapper.selPrivilagesByRoleId">
+        </collection>
+    </resultMap>
+
+    <!--user的分页sql-->
+    <resultMap id="rolesMap" type="cn.itxdl.bean.Role">
+        <id column="roleid" property="roleid"/>
+        <result column="rolename" property="rolename"/>
+        <result column="roleinfo" property="roleinfo"/>
+    </resultMap>
+
+    <select id="selRoleListByUserId" resultMap="rolesMap" parameterType="java.lang.Integer">
+        select roleid,rolename,roleinfo from tb_role
+        where roleid in (select role_id from user_role_mapping where user_id = #{id})
+    </select>
+
+    <update id="updateRole">
+        update tb_role set rolename = #{rolename},roleinfo = #{roleinfo} where roleid = #{roleid}
+    </update>
+
+    <insert id="addRolePrivilageMapping">
+        insert into role_privilage_mapping(role_id, privilage_id) values (#{role_id},#{privilage_id})
+    </insert>
+
+    <delete id="deleteRolePrivilageMapping" >
+        delete from role_privilage_mapping where role_id = #{role_id}
+    </delete>
+
+    <delete id="deleteUserRoleMapping">
+        delete from user_role_mapping where role_id = #{role_id}
+    </delete>
+
+    <delete id="deleteRole">
+        delete  from tb_role where roleid = #{roleid}
+    </delete>
+
+    <select id="findNextRoleId" resultType="java.lang.Integer">
+        select auto_increment
+        from information_schema.`TABLES`
+        where table_name='tb_role' and TABLE_SCHEMA='test1'
+    </select>
+
+    <select id="findPrivilageId" resultType="java.lang.Integer">
+        select privilageid from tb_privilage where name = #{name}
+    </select>
+
+    <insert id="addRole">
+        insert into tb_role(rolename, roleinfo) values(#{rolename},#{roleinfo})
+    </insert>
+
+    <select id="selCountRole" resultType="java.lang.Integer">
+        select count(roleid) from tb_role
+    </select>
+</mapper>
